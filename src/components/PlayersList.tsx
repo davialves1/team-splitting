@@ -16,28 +16,19 @@ export const PlayersList = ({
     { name: "Amadeus", rating: 3 },
     { name: "Nelio", rating: 3 },
     { name: "Leander", rating: 3 },
-    { name: "Mandip", rating: 5 },
-    { name: "Kurtis", rating: 4 },
+    { name: "Mandip", rating: 30 },
+    { name: "Kurtis", rating: 3 },
     { name: "Chris", rating: 3 },
-    { name: "Akram", rating: 2 },
+    { name: "Akram", rating: 3 },
     { name: "Flemming", rating: 4 },
     { name: "Roger", rating: 4 },
     { name: "Ethan", rating: 4 },
-    { name: "Rajab", rating: 2 },
+    { name: "Rajab", rating: 30 },
     { name: "Yehia", rating: 4 },
-    { name: "Shah", rating: 5 },
+    { name: "Shah", rating: 3 },
     { name: "Muheeb", rating: 4 },
     { name: "Tibo", rating: 4 },
     { name: "Lasse", rating: 4 },
-    { name: "Yaser", rating: 3 },
-    { name: "Piotr", rating: 3 },
-    { name: "Ilyasse", rating: 3 },
-    { name: "Helmi", rating: 3 },
-    { name: "Jelle", rating: 3 },
-    { name: "Mo", rating: 3 },
-    { name: "Robin", rating: 3 },
-    { name: "Mohammad", rating: 3 },
-    { name: "Ivan", rating: 3 },
   ];
 
   const onAddPlayer = (player: Player) => {
@@ -78,15 +69,12 @@ export const PlayersList = ({
     // Define how many teams
     let teamsCount = 2; // min 2
     const extraPlayers = selectedPlayers.length % 5;
-    if (selectedPlayers.length < 11 && extraPlayers < 3) {
-      teamsCount = Math.round(selectedPlayers.length / 5);
-    } else if (extraPlayers < 4) {
+    if (extraPlayers < 4) {
       teamsCount = Math.round(selectedPlayers.length / 5);
     } else {
       teamsCount = (selectedPlayers.length - extraPlayers) / 5 + 1;
     }
 
-    // Create empty teams
     const teams: Team[] = Array(teamsCount)
       .fill(0)
       .map((_, i) => ({
@@ -96,7 +84,6 @@ export const PlayersList = ({
         rating: 0,
       }));
 
-    // Fill teams with players
     for (const player of sortedPlayers) {
       let minTeam = teams[0];
       for (const team of teams) {
@@ -104,6 +91,10 @@ export const PlayersList = ({
           minTeam = team;
         }
       }
+      console.table(minTeam);
+      // return;
+      console.log(minTeam.players);
+
       minTeam.players.push(player);
       minTeam.rating += player.rating;
     }
