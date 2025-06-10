@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { TeamPlayers } from "../App";
 import type { Player } from "../models/Player";
 
@@ -9,20 +9,22 @@ export const PlayersList = ({
 }) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
 
-  useEffect(() => onDistributeTeams(), [selectedPlayers]);
+  useEffect(() => {
+    distribute();
+  }, [selectedPlayers]);
 
   const availablePlayers: Player[] = [
     { name: "Amadeus", rating: 3 },
     { name: "Nelio", rating: 3 },
     { name: "Leander", rating: 3 },
-    { name: "Mandip", rating: 3 },
+    { name: "Mandip", rating: 30 },
     { name: "Kurtis", rating: 3 },
     { name: "Chris", rating: 3 },
     { name: "Akram", rating: 3 },
     { name: "Flemming", rating: 4 },
     { name: "Roger", rating: 4 },
     { name: "Ethan", rating: 4 },
-    { name: "Rajab", rating: 3 },
+    { name: "Rajab", rating: 30 },
     { name: "Yehia", rating: 4 },
     { name: "Shah", rating: 3 },
     { name: "Muheeb", rating: 4 },
@@ -42,7 +44,26 @@ export const PlayersList = ({
     });
   };
 
-  const onDistributeTeams = () => {
+  const distributeViaAlgorithm = () => {
+    const sortedPlayers = selectedPlayers.sort((a, b) =>
+      a.rating > b.rating ? -1 : 1
+    );
+    let teamsCount = 2;
+    const extraPlayers = selectedPlayers.length % 5;
+    if (extraPlayers < 4) {
+      teamsCount = Math.round(selectedPlayers.length / 5);
+      console.log("Total teams: ", teamsCount);
+    } else {
+      teamsCount = (selectedPlayers.length - extraPlayers) / 5 + 1;
+      console.log("Total teams: ", teamsCount);
+    }
+    for (let player of sortedPlayers) {
+      const teams = Array(teamsCount).fill(0);
+    }
+  };
+
+  const distribute = useCallback(() => {
+    distributeViaAlgorithm();
     if (selectedPlayers.length <= 5) {
       setTeams([{ teamId: 1, players: selectedPlayers }]);
       return;
@@ -71,7 +92,7 @@ export const PlayersList = ({
       ]);
       return;
     }
-  };
+  }, [selectedPlayers]);
 
   return (
     <div className="text-left">
