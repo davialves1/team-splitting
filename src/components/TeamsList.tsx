@@ -75,7 +75,7 @@ export const PlayerSum = ({ players }: { players: Player[] }) => {
         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
           {players.length}
           <br />
-          {Math.round(average)}
+          {average.toLocaleString().slice(0, 3)}
         </div>
       </div>
     </li>
