@@ -38,7 +38,6 @@ export const PlayersList = ({
     { name: "Robin", rating: 3 },
     { name: "Mohammad", rating: 3 },
     { name: "Ivan", rating: 3 },
-    { name: "Ivan", rating: 3 },
   ];
 
   const onAddPlayer = (player: Player) => {
