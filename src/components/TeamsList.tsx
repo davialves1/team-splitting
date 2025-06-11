@@ -102,7 +102,11 @@ export const PlayerSum = ({
         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
           {players.length}
           <br />
+<<<<<<< HEAD
           {showRating && average.toLocaleString().slice(0, 3)}
+=======
+          {average.toLocaleString().slice(0, 3)}
+>>>>>>> 5043eaf (fix team spliitng)
         </div>
       </div>
     </li>
