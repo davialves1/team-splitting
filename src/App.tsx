@@ -20,7 +20,7 @@ function App() {
   const notEnoughPlayers = playersCount > 1 && playersCount < 10;
 
   return (
-    <div className="w-full h-dvh justify-center items-center overflow-auto dark:bg-gray-800">
+    <div className="w-full h-dvh justify-center items-center overflow-auto dark:bg-gray-800 mb-5">
       <div className="w-full h-full flex items-center flex-col p-5 lg:p-10">
         <h1 className="text-6xl text-gray-700 dark:text-gray-100 mb-5 text-center w-full">
           Team Splitting
@@ -33,11 +33,12 @@ function App() {
           setShowNames={setShowNames}
         />
         <div className="grid grid-cols-12 gap-2 w-full">
-          {showNames && (
-            <div className="col-span-5 lg:col-span-2">
-              <PlayersList setTeams={setTeams} />
-            </div>
-          )}
+          <div
+            className={`${showNames ? "col-span-5 lg:col-span-2" : "hidden"}`}
+          >
+            <PlayersList setTeams={setTeams} />
+          </div>
+
           <div
             className={`${
               showNames ? "col-span-7 lg:col-span-10" : "col-span-12"
