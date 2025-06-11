@@ -29,6 +29,16 @@ export const PlayersList = ({
     { name: "Muheeb", rating: 4 },
     { name: "Tibo", rating: 4 },
     { name: "Lasse", rating: 4 },
+    { name: "Yaser", rating: 3 },
+    { name: "Piotr", rating: 3 },
+    { name: "Ilyasse", rating: 3 },
+    { name: "Helmi", rating: 3 },
+    { name: "Jelle", rating: 3 },
+    { name: "Mo", rating: 3 },
+    { name: "Robin", rating: 3 },
+    { name: "Mohammad", rating: 3 },
+    { name: "Ivan", rating: 3 },
+    { name: "Ivan", rating: 3 },
   ];
 
   const onAddPlayer = (player: Player) => {
