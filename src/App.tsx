@@ -11,6 +11,8 @@ function App() {
 
   const [showRating, setShowRating] = useState(true);
 
+  const [showNames, setShowNames] = useState(true);
+
   const playersCount = teams
     .map((team) => team.players.length)
     .reduce((a, b) => a + b, 0);
@@ -20,16 +22,27 @@ function App() {
   return (
     <div className="w-full h-dvh justify-center items-center overflow-auto dark:bg-gray-800">
       <div className="w-full h-full flex items-center flex-col p-5 lg:p-10">
-        <h1 className="text-6xl text-gray-700 dark:text-gray-100 mb-5">
+        <h1 className="text-6xl text-gray-700 dark:text-gray-100 mb-5 text-center w-full">
           Team Splitting
         </h1>
         {notEnoughPlayers && <Alert text="Not enough players!" />}
-        <ActionBar setShowRating={setShowRating} showRating={showRating} />
+        <ActionBar
+          setShowRating={setShowRating}
+          showRating={showRating}
+          showNames={showNames}
+          setShowNames={setShowNames}
+        />
         <div className="grid grid-cols-12 gap-2 w-full">
-          <div className="col-span-5 lg:col-span-2">
-            <PlayersList setTeams={setTeams} />
-          </div>
-          <div className="col-span-7 lg:col-span-10">
+          {showNames && (
+            <div className="col-span-5 lg:col-span-2">
+              <PlayersList setTeams={setTeams} />
+            </div>
+          )}
+          <div
+            className={`${
+              showNames ? "col-span-7 lg:col-span-10" : "col-span-12"
+            }`}
+          >
             <div className="flex flex-row flex-wrap lg:flex-nowrap gap-2 justify-start items-start">
               {teams.map((team, i) => (
                 <TeamList showRating={showRating} key={i} team={team} />
