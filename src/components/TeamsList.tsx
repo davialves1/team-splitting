@@ -92,21 +92,17 @@ export const PlayerSum = ({
         <div className="shrink-0"></div>
         <div className="flex-1 min-w-0 ms-4">
           <p className="text-sm text-gray-500 truncate dark:text-gray-400 text-left">
-            Total Players
+            Players
           </p>
           <p className="text-sm text-gray-500 truncate dark:text-gray-400 text-left">
-            {showRating && "Average team score"}
+            Average team score
           </p>
         </div>
 
         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
           {players.length}
           <br />
-<<<<<<< HEAD
           {showRating && average.toLocaleString().slice(0, 3)}
-=======
-          {average.toLocaleString().slice(0, 3)}
->>>>>>> 5043eaf (fix team spliitng)
         </div>
       </div>
     </li>
