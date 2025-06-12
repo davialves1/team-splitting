@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
+import { IoMdMenu } from "react-icons/io";
 import type { ColorShirt, Player, Team } from "../models/Models";
 
 export const PlayersList = ({
   setTeams,
+  showList,
+  setShowList,
 }: {
   setTeams: React.Dispatch<React.SetStateAction<Team[]>>;
+  showList: boolean;
+  setShowList: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
 
@@ -46,13 +51,16 @@ export const PlayersList = ({
         .map((prevPlayer) => prevPlayer.name)
         .includes(player.name);
       if (isPresent) {
+        if (prev.length > 0) {
+          setTeams([]);
+        }
         return prev.filter((p) => p.name !== player.name);
       }
       return [...prev, player];
     });
   };
 
-  const teamColors = ["Black", "White", "Red", "Yellow", "Bibs"];
+  const teamColors = ["⚫ Black", "⚪ White", "🎽 Bibs", "🔴 Red", "🟡 Yellow"];
 
   const distribute = () => {
     if (selectedPlayers.length < 1) {
@@ -112,11 +120,23 @@ export const PlayersList = ({
   };
 
   return (
-    <ul className="text-left w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+    <ul
+      className={`text-left text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+        showList ? "h-1/2  w-full overflow-y-scroll" : "w-fit h-fit"
+      }`}
+    >
+      <li
+        className="text-center p-4 dark:bg-gray-600 cursor-pointer flex gap-2 items-center border-b dark:border-gray-600 border-gray-200"
+        onClick={() => setShowList((prev) => !prev)}
+      >
+        <IoMdMenu /> {showList && "List of Players"}
+      </li>
       {availablePlayers.map((player, i) => {
         return (
           <li
-            className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 cursor-pointer"
+            className={`w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 cursor-pointer ${
+              !showList && "hidden"
+            }`}
             key={`${player.name}-${i}-checkbox`}
           >
             <div className="flex items-center ps-3">
@@ -132,15 +152,17 @@ export const PlayersList = ({
                 htmlFor={player.name}
                 className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                {player.name}
+                {showList && player.name}
               </label>
             </div>
           </li>
         );
       })}
-      <div className="text-xs text-center p-5 dark:text-gray-300 w-full ">
-        Total of {selectedPlayers.length} Players
-      </div>
+      {showList && (
+        <div className="text-xs text-center p-5 dark:text-gray-300 w-full ">
+          Total of {selectedPlayers.length} Players
+        </div>
+      )}
     </ul>
   );
 };

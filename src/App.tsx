@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import ActionBar from "./components/ActionBar";
 import { PlayersList } from "./components/PlayersList";
 import TeamList from "./components/TeamsList";
 import type { Team } from "./models/Models";
 import Alert from "./components/Alert";
+import { FaArrowLeft } from "react-icons/fa";
 
 function App() {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -13,14 +14,14 @@ function App() {
 
   const [showNames, setShowNames] = useState(true);
 
-  const playersCount = teams
-    .map((team) => team.players.length)
-    .reduce((a, b) => a + b, 0);
+  const playersCount = useMemo(() => {
+    return teams.map((team) => team.players.length).reduce((a, b) => a + b, 0);
+  }, [teams]);
 
   const notEnoughPlayers = playersCount > 1 && playersCount < 10;
 
   return (
-    <div className="w-full h-dvh justify-center items-center overflow-auto dark:bg-gray-800 mb-5">
+    <div className="w-full h-dvh justify-center items-center overflow-hidden dark:bg-gray-800 b-5">
       <div className="w-full h-full flex items-center flex-col p-5 lg:p-10">
         <h1 className="text-6xl text-gray-700 dark:text-gray-100 mb-5 text-center w-full">
           Team Splitting
@@ -32,23 +33,39 @@ function App() {
           showNames={showNames}
           setShowNames={setShowNames}
         />
-        <div className="grid grid-cols-12 gap-2 w-full">
+        <div
+          className={`gap-2 ${
+            showNames ? "grid grid-cols-12" : "flex flex-row"
+          } w-full`}
+        >
           <div
-            className={`${showNames ? "col-span-5 lg:col-span-2" : "hidden"}`}
+            className={`${showNames ? "col-span-5 lg:col-span-2" : "w-fit"}`}
           >
-            <PlayersList setTeams={setTeams} />
+            <PlayersList
+              showList={showNames}
+              setShowList={setShowNames}
+              setTeams={setTeams}
+            />
           </div>
 
           <div
-            className={`${
-              showNames ? "col-span-7 lg:col-span-10" : "col-span-12"
-            }`}
+            className={`${showNames ? "col-span-7 lg:col-span-10" : "w-full"}`}
           >
-            <div className="flex flex-row flex-wrap lg:flex-nowrap gap-2 justify-start items-start">
-              {teams.map((team, i) => (
-                <TeamList showRating={showRating} key={i} team={team} />
-              ))}
-            </div>
+            {playersCount === 0 && (
+              <div className="w-full min-h-[500px] gap-2 m-1 dark:text-gray-300 flex flex-row justify-center items-center text-xs  outline-1 outline-gray-200 dark:outline-gray-600 rounded-lg">
+                <FaArrowLeft className="animate-pulse" />
+                <div className="animate-pulse">
+                  Select players from the list
+                </div>
+              </div>
+            )}
+            {playersCount > 0 && (
+              <div className="flex flex-row flex-wrap lg:flex-nowrap gap-2 justify-start items-start">
+                {teams.map((team, i) => (
+                  <TeamList showRating={showRating} key={i} team={team} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
