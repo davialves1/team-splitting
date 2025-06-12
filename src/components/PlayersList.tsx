@@ -17,33 +17,9 @@ export const PlayersList = ({
     distribute();
   }, [selectedPlayers]);
 
-  const availablePlayers: Player[] = [
-    { name: "Amadeus", rating: 3 },
-    { name: "Nelio", rating: 3 },
-    { name: "Leander", rating: 3 },
-    { name: "Mandip", rating: 5 },
-    { name: "Kurtis", rating: 4 },
-    { name: "Chris", rating: 3 },
-    { name: "Akram", rating: 2 },
-    { name: "Flemming", rating: 4 },
-    { name: "Roger", rating: 4 },
-    { name: "Ethan", rating: 4 },
-    { name: "Rajab", rating: 2 },
-    { name: "Yehia", rating: 4 },
-    { name: "Shah", rating: 5 },
-    { name: "Muheeb", rating: 4 },
-    { name: "Tibo", rating: 4 },
-    { name: "Lasse", rating: 4 },
-    { name: "Yaser", rating: 3 },
-    { name: "Piotr", rating: 3 },
-    { name: "Ilyasse", rating: 3 },
-    { name: "Helmi", rating: 3 },
-    { name: "Jelle", rating: 3 },
-    { name: "Mo", rating: 3 },
-    { name: "Robin", rating: 3 },
-    { name: "Mohammad", rating: 3 },
-    { name: "Ivan", rating: 3 },
-  ];
+  const rating = `W3sibmFtZSI6IkFtYWRldXMiLCJyYXRpbmciOjR9LHsibmFtZSI6Ik5lbGlvIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJEYXZpIiwicmF0aW5nIjozfSx7Im5hbWUiOiJMZWFuZGVyIiwicmF0aW5nIjozfSx7Im5hbWUiOiJNYW5kaXAiLCJyYXRpbmciOjN9LHsibmFtZSI6Ikt1cnRpcyIsInJhdGluZyI6NH0seyJuYW1lIjoiQ2hyaXMiLCJyYXRpbmciOjN9LHsibmFtZSI6IkFrcmFtIiwicmF0aW5nIjozfSx7Im5hbWUiOiJGbGVtbWluZyIsInJhdGluZyI6NH0seyJuYW1lIjoiUm9nZXIiLCJyYXRpbmciOjR9LHsibmFtZSI6IkV0aGFuIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJSYWphYiIsInJhdGluZyI6M30seyJuYW1lIjoiWWVoaWEiLCJyYXRpbmciOjN9LHsibmFtZSI6IlNoYWgiLCJyYXRpbmciOjR9LHsibmFtZSI6Ik11aGVlYiIsInJhdGluZyI6NH0seyJuYW1lIjoiVGlibyIsInJhdGluZyI6NH0seyJuYW1lIjoiTGFzc2UiLCJyYXRpbmciOjR9LHsibmFtZSI6Illhc2VyIiwicmF0aW5nIjozfSx7Im5hbWUiOiJQaW90ciIsInJhdGluZyI6M30seyJuYW1lIjoiSWx5YXNzZSIsInJhdGluZyI6M30seyJuYW1lIjoiSGVsbWkiLCJyYXRpbmciOjR9LHsibmFtZSI6IkplbGxlIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJNbyIsInJhdGluZyI6M30seyJuYW1lIjoiUm9iaW4iLCJyYXRpbmciOjN9LHsibmFtZSI6Ik1vaGFtbWFkIiwicmF0aW5nIjozfSx7Im5hbWUiOiJJdmFuIiwicmF0aW5nIjozfV0=`;
+
+  const availablePlayers: Player[] = JSON.parse(atob(rating)) as Player[];
 
   const onAddPlayer = (player: Player) => {
     setSelectedPlayers((prev) => {

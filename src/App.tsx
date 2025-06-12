@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import ActionBar from "./components/ActionBar";
 import { PlayersList } from "./components/PlayersList";
@@ -6,13 +6,23 @@ import TeamList from "./components/TeamsList";
 import type { Team } from "./models/Models";
 import Alert from "./components/Alert";
 import { FaArrowLeft } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
 
 function App() {
   const [teams, setTeams] = useState<Team[]>([]);
 
-  const [showRating, setShowRating] = useState(true);
+  const [showRating, setShowRating] = useState(false);
 
   const [showNames, setShowNames] = useState(true);
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const isAdmin = searchParams.get("admin");
+    if (isAdmin) {
+      setShowRating(true);
+    }
+  }, [searchParams]);
 
   const playersCount = useMemo(() => {
     return teams.map((team) => team.players.length).reduce((a, b) => a + b, 0);
