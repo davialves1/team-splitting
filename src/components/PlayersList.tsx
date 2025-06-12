@@ -317,4 +317,8 @@ const availablePlayers: Player[] = [
     name: "Yazan",
     rating: 3,
   },
+  {
+    name: "Lex",
+    rating: 3,
+  },
 ];
