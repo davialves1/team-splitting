@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { IoMdMenu } from "react-icons/io";
 import type { ColorShirt, Player, Team } from "../models/Models";
 
@@ -13,6 +13,8 @@ export const PlayersList = ({
 }) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
 
+  const searchRef = createRef<HTMLInputElement>();
+
   useEffect(() => {
     distribute();
   }, [selectedPlayers]);
@@ -20,6 +22,31 @@ export const PlayersList = ({
   const rating = `W3sibmFtZSI6IkFtYWRldXMiLCJyYXRpbmciOjR9LHsibmFtZSI6Ik5lbGlvIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJEYXZpIiwicmF0aW5nIjozfSx7Im5hbWUiOiJMZWFuZGVyIiwicmF0aW5nIjozfSx7Im5hbWUiOiJNYW5kaXAiLCJyYXRpbmciOjN9LHsibmFtZSI6Ikt1cnRpcyIsInJhdGluZyI6NH0seyJuYW1lIjoiQ2hyaXMiLCJyYXRpbmciOjN9LHsibmFtZSI6IkFrcmFtIiwicmF0aW5nIjozfSx7Im5hbWUiOiJGbGVtbWluZyIsInJhdGluZyI6NH0seyJuYW1lIjoiUm9nZXIiLCJyYXRpbmciOjR9LHsibmFtZSI6IkV0aGFuIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJSYWphYiIsInJhdGluZyI6M30seyJuYW1lIjoiWWVoaWEiLCJyYXRpbmciOjN9LHsibmFtZSI6IlNoYWgiLCJyYXRpbmciOjR9LHsibmFtZSI6Ik11aGVlYiIsInJhdGluZyI6NH0seyJuYW1lIjoiVGlibyIsInJhdGluZyI6NH0seyJuYW1lIjoiTGFzc2UiLCJyYXRpbmciOjR9LHsibmFtZSI6Illhc2VyIiwicmF0aW5nIjozfSx7Im5hbWUiOiJQaW90ciIsInJhdGluZyI6M30seyJuYW1lIjoiSWx5YXNzZSIsInJhdGluZyI6M30seyJuYW1lIjoiSGVsbWkiLCJyYXRpbmciOjR9LHsibmFtZSI6IkplbGxlIiwicmF0aW5nIjo0fSx7Im5hbWUiOiJNbyIsInJhdGluZyI6M30seyJuYW1lIjoiUm9iaW4iLCJyYXRpbmciOjN9LHsibmFtZSI6Ik1vaGFtbWFkIiwicmF0aW5nIjozfSx7Im5hbWUiOiJJdmFuIiwicmF0aW5nIjozfV0=`;
 
   const availablePlayers: Player[] = JSON.parse(atob(rating)) as Player[];
+
+  const [visiblePlayers, setVisiblePlayers] = useState(availablePlayers);
+
+  const selectedPlayersName = selectedPlayers.map((player) => player.name);
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onAddPlayer(visiblePlayers[0]);
+  };
+
+  const onSearch = (query: string) => {
+    if (!query || query === "") {
+      setVisiblePlayers(availablePlayers);
+      return;
+    }
+    setVisiblePlayers((prev) => {
+      const result = prev.filter((player) =>
+        player.name.toLowerCase().includes(query.toLowerCase())
+      );
+      if (result.length > 0) {
+        return result;
+      }
+      return availablePlayers;
+    });
+  };
 
   const onAddPlayer = (player: Player) => {
     setSelectedPlayers((prev) => {
@@ -97,17 +124,58 @@ export const PlayersList = ({
 
   return (
     <ul
-      className={`text-left text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+      className={`text-left min-h-[800px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
         showList ? "h-1/2  w-full overflow-y-scroll" : "w-fit h-fit"
       }`}
     >
+      {/* Visibility Button */}
       <li
         className="text-center p-4 dark:bg-gray-600 cursor-pointer flex gap-2 items-center border-b dark:border-gray-600 border-gray-200"
         onClick={() => setShowList((prev) => !prev)}
       >
         <IoMdMenu /> {showList && "List of Players"}
       </li>
-      {availablePlayers.map((player, i) => {
+
+      {/* Search */}
+      <form className="max-w-md mx-auto p-2" onSubmit={(e) => onSubmit(e)}>
+        <label
+          htmlFor="default-search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            ref={searchRef}
+            onChange={(e) => onSearch(e.target.value)}
+            id="default-search"
+            className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search"
+            required
+          />
+        </div>
+      </form>
+
+      {/* List of Players */}
+      {visiblePlayers.map((player, i) => {
         return (
           <li
             className={`w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600 cursor-pointer ${
@@ -120,6 +188,7 @@ export const PlayersList = ({
                 id={player.name}
                 aria-label={player.name}
                 type="checkbox"
+                checked={selectedPlayersName.includes(player.name)}
                 value={player.name}
                 onChange={() => onAddPlayer(player)}
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-800 dark:border-gray-500"
@@ -142,3 +211,110 @@ export const PlayersList = ({
     </ul>
   );
 };
+
+const ratingsList = [
+  {
+    name: "Amadeus",
+    rating: 4,
+  },
+  {
+    name: "Nelio",
+    rating: 4,
+  },
+  {
+    name: "Davi",
+    rating: 3,
+  },
+  {
+    name: "Leander",
+    rating: 3,
+  },
+  {
+    name: "Mandip",
+    rating: 3,
+  },
+  {
+    name: "Kurtis",
+    rating: 4,
+  },
+  {
+    name: "Chris",
+    rating: 3,
+  },
+  {
+    name: "Akram",
+    rating: 3,
+  },
+  {
+    name: "Flemming",
+    rating: 4,
+  },
+  {
+    name: "Roger",
+    rating: 4,
+  },
+  {
+    name: "Ethan",
+    rating: 4,
+  },
+  {
+    name: "Rajab",
+    rating: 3,
+  },
+  {
+    name: "Yehia",
+    rating: 3,
+  },
+  {
+    name: "Shah",
+    rating: 4,
+  },
+  {
+    name: "Muheeb",
+    rating: 4,
+  },
+  {
+    name: "Tibo",
+    rating: 4,
+  },
+  {
+    name: "Lasse",
+    rating: 4,
+  },
+  {
+    name: "Yaser",
+    rating: 3,
+  },
+  {
+    name: "Piotr",
+    rating: 3,
+  },
+  {
+    name: "Ilyasse",
+    rating: 3,
+  },
+  {
+    name: "Helmi",
+    rating: 4,
+  },
+  {
+    name: "Jelle",
+    rating: 4,
+  },
+  {
+    name: "Mo",
+    rating: 3,
+  },
+  {
+    name: "Robin",
+    rating: 3,
+  },
+  {
+    name: "Mohammad",
+    rating: 3,
+  },
+  {
+    name: "Ivan",
+    rating: 3,
+  },
+];
