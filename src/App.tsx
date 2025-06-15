@@ -5,8 +5,9 @@ import { PlayersList } from "./components/PlayersList";
 import TeamList from "./components/TeamsList";
 import type { Team } from "./models/Models";
 import Alert from "./components/Alert";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
+import { IoMdClose } from "react-icons/io";
 
 function App() {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -14,6 +15,8 @@ function App() {
   const [showRating, setShowRating] = useState(false);
 
   const [showNames, setShowNames] = useState(true);
+
+  const [wppMessage, setWppMessage] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -85,8 +88,22 @@ function App() {
                 ))}
               </div>
             )}
-            {playersCount > 0 && (
-              <div className="w-fit bg-white border border-gray-200 shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-10 p-5 text-sm rounded-lg">
+            {playersCount > 0 && !wppMessage && (
+              <div
+                className="cursor-pointer w-fit bg-white border border-gray-200 shadow-sm sm:p-5 dark:bg-gray-800 dark:border-gray-700 mt-2 p-5 text-sm rounded-lg flex gap-2 items-center"
+                onClick={() => setWppMessage(true)}
+              >
+                WhatsApp message <FaWhatsapp size={18} />
+              </div>
+            )}
+            {wppMessage && (
+              <div className="w-fit bg-white border border-gray-200 shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-2 p-5 text-sm rounded-lg">
+                <button
+                  onClick={() => setWppMessage(false)}
+                  className="p-2 flex items-center gap-2 bg-gray-100 rounded-lg mb-4 cursor-pointer"
+                >
+                  Close <IoMdClose />
+                </button>
                 _Hello everyone, these is the teams for next game:_
                 <br />
                 <br />
