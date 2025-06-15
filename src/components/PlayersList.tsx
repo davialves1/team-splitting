@@ -19,18 +19,22 @@ export const PlayersList = ({
     distribute();
   }, [selectedPlayers]);
 
-  const [visiblePlayers, setVisiblePlayers] = useState(availablePlayers);
+  const [visiblePlayers, setVisiblePlayers] = useState(sortedPlayers);
 
   const selectedPlayersName = selectedPlayers.map((player) => player.name);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onAddPlayer(visiblePlayers[0]);
+    if (searchRef && searchRef.current) {
+      searchRef.current.value = "";
+    }
+    setVisiblePlayers(sortedPlayers);
   };
 
   const onSearch = (query: string) => {
     if (!query || query === "") {
-      setVisiblePlayers(availablePlayers);
+      setVisiblePlayers(sortedPlayers);
       return;
     }
     setVisiblePlayers((prev) => {
@@ -40,7 +44,7 @@ export const PlayersList = ({
       if (result.length > 0) {
         return result;
       }
-      return availablePlayers;
+      return sortedPlayers;
     });
   };
 
@@ -133,42 +137,47 @@ export const PlayersList = ({
       </li>
 
       {/* Search */}
-      <form className="max-w-md mx-auto p-2" onSubmit={(e) => onSubmit(e)}>
-        <label
-          htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-        >
-          Search
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
+      <li>
+        <form className="max-w-md mx-auto p-2" onSubmit={(e) => onSubmit(e)}>
+          <label
+            htmlFor="default-search"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          >
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="search"
+              ref={searchRef}
+              onChange={(e) => onSearch(e.target.value)}
+              id="default-search"
+              className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search"
+              required
+            />
           </div>
-          <input
-            type="search"
-            ref={searchRef}
-            onChange={(e) => onSearch(e.target.value)}
-            id="default-search"
-            className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search"
-            required
-          />
-        </div>
-      </form>
+        </form>
+      </li>
+
+      {/* Reset Button */}
+      <li className="w-full p-4 hidden">Reset</li>
 
       {/* List of Players */}
       {visiblePlayers.map((player, i) => {
@@ -232,10 +241,6 @@ const availablePlayers: Player[] = [
   {
     name: "Kurtis",
     rating: 4.1,
-  },
-  {
-    name: "Chris",
-    rating: 4,
   },
   {
     name: "Akram",
@@ -321,4 +326,18 @@ const availablePlayers: Player[] = [
     name: "Lex",
     rating: 3,
   },
+  {
+    name: "Sameh Othman",
+    rating: 3,
+  },
 ];
+
+const sortedPlayers = availablePlayers.sort((a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+});

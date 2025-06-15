@@ -51,11 +51,14 @@ function App() {
           <div
             className={`${showNames ? "col-span-5 lg:col-span-2" : "w-fit"}`}
           >
+            {/* Alert */}
             {notEnoughPlayers && (
               <div className="hidden md:block">
                 <Alert text="Not enough players!" />
               </div>
             )}
+
+            {/* Players List */}
             <PlayersList
               showList={showNames}
               setShowList={setShowNames}
@@ -63,6 +66,7 @@ function App() {
             />
           </div>
 
+          {/* Teams List */}
           <div
             className={`${showNames ? "col-span-7 lg:col-span-10" : "w-full"}`}
           >
@@ -78,6 +82,26 @@ function App() {
               <div className="flex flex-row flex-wrap lg:flex-nowrap gap-2 justify-start items-start">
                 {teams.map((team, i) => (
                   <TeamList showRating={showRating} key={i} team={team} />
+                ))}
+              </div>
+            )}
+            {playersCount > 0 && (
+              <div className="w-fit bg-white border border-gray-200 shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-10 p-5 text-sm rounded-lg">
+                _Hello everyone, these is the teams for next game:_
+                <br />
+                <br />
+                {teams.map((team) => (
+                  <div className="w-full">
+                    <strong>*{team.color} Shirt Team*</strong>
+                    <ul className="pt-2">
+                      {team.players.map((player, i) => (
+                        <li>
+                          {i + 1} - {player.name}
+                        </li>
+                      ))}
+                    </ul>
+                    <br />
+                  </div>
                 ))}
               </div>
             )}
