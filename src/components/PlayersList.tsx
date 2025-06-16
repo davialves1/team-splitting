@@ -134,7 +134,7 @@ export const PlayersList = ({
     <ul
       className={`text-left text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
         showList
-          ? "w-full overflow-y-scroll h-[400px] md:h-full md:max-h-[calc(100vh-200px)]"
+          ? "w-full overflow-y-scroll h-[300px] md:h-full md:max-h-[calc(100vh-200px)]"
           : "w-fit h-fit"
       }`}
     >
