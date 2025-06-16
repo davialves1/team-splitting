@@ -67,7 +67,7 @@ function App() {
           >
             {playersCount === 0 && (
               <div className="w-full min-h-[500px] gap-2 m-1 dark:text-gray-300 flex flex-row justify-center items-center text-xs  outline-1 outline-gray-200 dark:outline-gray-600 rounded-lg">
-                <FaArrowLeft className="animate-pulse" />
+                <FaArrowLeft className="animate-pulse hidden md:block" />
                 <div className="animate-pulse">
                   Select players from the list
                 </div>
