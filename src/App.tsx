@@ -30,7 +30,7 @@ function App() {
   }, [teams]);
 
   return (
-    <div className="w-full h-dvh justify-center items-center overflow-hidden dark:bg-gray-800 b-5">
+    <div className="w-full min-h-dvh justify-center items-center dark:bg-gray-800 b-5">
       <div className="w-full h-full flex items-center flex-col p-5 lg:p-10">
         <h1 className="text-6xl text-gray-700 dark:text-gray-100 mb-5 text-center w-full">
           Team Splitting
@@ -49,7 +49,7 @@ function App() {
           }`}
         >
           <div
-            className={`${showNames ? "col-span-5 lg:col-span-2" : "w-fit"}`}
+            className={`${showNames ? "col-span-12 lg:col-span-2" : "w-fit"}`}
           >
             {/* Players List */}
             <PlayersList
@@ -63,7 +63,7 @@ function App() {
 
           {/* Teams List */}
           <div
-            className={`${showNames ? "col-span-7 lg:col-span-10" : "w-full"}`}
+            className={`${showNames ? "col-span-12 lg:col-span-10" : "w-full"}`}
           >
             {playersCount === 0 && (
               <div className="w-full min-h-[500px] gap-2 m-1 dark:text-gray-300 flex flex-row justify-center items-center text-xs  outline-1 outline-gray-200 dark:outline-gray-600 rounded-lg">
