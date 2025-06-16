@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from "react";
+import { createRef, useCallback, useEffect, useMemo, useState } from "react";
 import { IoMdMenu } from "react-icons/io";
 import type { ColorShirt, Player, Team } from "../models/Models";
 
@@ -6,18 +6,19 @@ export const PlayersList = ({
   setTeams,
   showList,
   setShowList,
+  selectedPlayers,
+  setSelectedPlayers,
 }: {
   setTeams: React.Dispatch<React.SetStateAction<Team[]>>;
   showList: boolean;
   setShowList: React.Dispatch<React.SetStateAction<boolean>>;
+
+  selectedPlayers: Player[];
+  setSelectedPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
 }) => {
-  const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
+  // const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
 
   const searchRef = createRef<HTMLInputElement>();
-
-  useEffect(() => {
-    distribute();
-  }, [selectedPlayers]);
 
   const [visiblePlayers, setVisiblePlayers] = useState(sortedPlayers);
 
@@ -63,9 +64,12 @@ export const PlayersList = ({
     });
   };
 
-  const teamColors = ["⚫ Black", "⚪ White", "🎽 Bibs", "🔴 Red", "🟡 Yellow"];
+  const teamColors = useMemo(
+    () => ["⚫ Black", "⚪ White", "🎽 Bibs", "🔴 Red", "🟡 Yellow"],
+    []
+  );
 
-  const distribute = () => {
+  const distribute = useCallback(() => {
     if (selectedPlayers.length < 1) {
       return;
     }
@@ -120,12 +124,18 @@ export const PlayersList = ({
     }
 
     setTeams(teams);
-  };
+  }, [selectedPlayers, setTeams, teamColors]);
+
+  useEffect(() => {
+    distribute();
+  }, [distribute, selectedPlayers]);
 
   return (
     <ul
-      className={`text-left min-h-[800px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-        showList ? "h-1/2  w-full overflow-y-scroll" : "w-fit h-fit"
+      className={`text-left text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+        showList
+          ? "w-full overflow-y-scroll max-h-[calc(100vh-200px)]"
+          : "w-fit h-fit"
       }`}
     >
       {/* Visibility Button */}
@@ -137,7 +147,7 @@ export const PlayersList = ({
       </li>
 
       {/* Search */}
-      <li>
+      <li className={showList ? "" : "hidden"}>
         <form className="max-w-md mx-auto p-2" onSubmit={(e) => onSubmit(e)}>
           <label
             htmlFor="default-search"
