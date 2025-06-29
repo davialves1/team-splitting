@@ -305,6 +305,10 @@ const availablePlayers: Player[] = [
     rating: 3,
   },
   {
+    name: "Pascal",
+    rating: 3,
+  },
+  {
     name: "Piotr",
     rating: 3,
   },
