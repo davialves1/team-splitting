@@ -290,7 +290,7 @@ const availablePlayers: Player[] = [
   },
   {
     name: "Muheeb",
-    rating: 4,
+    rating: 3.5,
   },
   {
     name: "Tibo",
@@ -347,6 +347,10 @@ const availablePlayers: Player[] = [
   {
     name: "Sameh Othman",
     rating: 3,
+  },
+  {
+    name: "Sascha",
+    rating: 3.5,
   },
 ];
 
