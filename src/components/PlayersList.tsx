@@ -233,6 +233,10 @@ const availablePlayers: Player[] = [
     rating: 4,
   },
   {
+    name: "Clement",
+    rating: 3,
+  },
+  {
     name: "Nelio",
     rating: 4.1,
   },
@@ -263,6 +267,10 @@ const availablePlayers: Player[] = [
   {
     name: "Roger",
     rating: 4,
+  },
+  {
+    name: "Guest Player",
+    rating: 3,
   },
   {
     name: "Ethan",
